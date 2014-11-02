@@ -21,9 +21,10 @@ router.get '/api/user/:id/submission', (req, res) ->
 
 router.get '/api/user/:id/submission/authorizable', (req, res) ->
   Submission.find
-      authroizer: req.params.id
+      authorizers: req.params.id
     , null
     , (err, submissions) ->
+      console.log submissions
 
       res.json submissions
 
@@ -40,7 +41,7 @@ router.post '/api/user/:id/submission/create', (req, res) ->
       submission = new Submission
         user: req.params.id
         status: 'PENDING'
-        amount: req.body.amount
+        amount: parseFloat req.body.amount
         description: req.body.description
         authorizers: authorizerIds
 
@@ -75,6 +76,8 @@ authorizeSubmission = (userId, submissionId, req, res) ->
   signature = new Signature
     user: userId
     submission: submissionId
+
+  console.log userId, submissionId
 
   # find the submission that needs to be signed
   Submission.findOne

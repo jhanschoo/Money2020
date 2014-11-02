@@ -12,6 +12,16 @@ this.make = (submission) ->
   console.log (submission.amount / 100)
   console.log (submission.amount / 100).toFixed(2)
 
+  console.log {
+      url: URL
+      form:
+        access_token: ACCESS_TOKEN
+        phone: submission.user
+        note: if submission.picLink then submission.description + ' ' + submission.picLink  else submission.description
+        amount: submission.amount.toFixed 2
+        audience: 'private'
+  }
+
   request.post(
       url: URL
       form:
@@ -27,6 +37,7 @@ this.make = (submission) ->
       submission.receipt = body
       submission.status = 'PAID'
       submission.save()
+      console.log 'PAYMENT MADEE'
   )
 
 module.exports = this

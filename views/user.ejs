@@ -1,6 +1,16 @@
 <html>
         <head>
+                <title>AUTHogether - Admin</title>
                 <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+                <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+                <style type="text/css">
+                        td {
+                                padding: 10px;
+                        }
+                        table, thead, td {
+                                border: 1px solid black;
+                        }
+                </style>
         </head>
  
         <body>
@@ -11,30 +21,34 @@
                         $(document).ready(function() {
                                 // do the following..
                        
+                                var url_id = location.pathname.match(/\/user\/\d+/)[0].substring(6);
+ 
                                 // ajax get from url
-                                $.get('api/4083685136/submission/authorizable', function(data) {
+                                $.get('/api/user/' + url_id + '/submission/authorizable', function(data) {
                                         // output to console
-                                        console.log(JSON.stringify(data));
+                                      console.log(JSON.stringify(data));
  
                                         //var data = [ [ 1, 2, 3 ], [ 4, 5, 6 ], [7, 8, 9 ] ];
  
-                                        var html = '<table border="1"><thead></thead><tbody>';
+                                        var html = '<table border="1" style="width: 90%;"><thead></thead><tbody>';
  
-                                        html += '<tr><td>ID</td><td>User</td><td>Status</td><td>Amount</td><td>Description</td><td>Paid</td><td>Current Number of Signatures</td><td>Signatures Needed</td></tr>';
+                                        html += '<tr style="text-align: center; background-color: #4973b6; color: white;"><td>ID</td><td>User</td><td>Status</td><td>Description</td><td>Amount</td><td>Paid</td><td>Current Number <br/> of Signatures</td><td>Total Number <br/> of Signatures Needed</td><td></td></tr>';
  
                                         for (var i = 0, len = data.length; i < len; ++i) {
                                         html += '<tr>';
                                         //for (var j = 0, rowLen = data[i].length; j < rowLen; ++j ) {
-                                                html += '<td>' + data[i].id + '</td>';
+                                                html += '<td>' + data[i]._id + '</td>';
                                                 html += '<td>' + data[i].user + '</td>';
                                                 html += '<td>' + data[i].status + '</td>';
-                                                html += '<td>' + data[i].amount + '</td>';
                                                 html += '<td>' + data[i].description + '</td>';
-                                                html += '<td>' + data[i].paid + '</td>';
+                                                html += '<td>' + data[i].amount + '</td>';
+                                                var boolValChange = '';
+                                                if (data[i].paid == true) boolValChange = 'Yes'; else boolValChange = 'No';
+                                                html += '<td>' + boolValChange + '</td>';
                                                 html += '<td>' + data[i].numSignatures + '</td>';
                                                 html += '<td>' + data[i].totalSignaturesNeeded + '</td>';
                                         //}
-                                        html += '<td><button id=' + data[i].id + ' onClick="reply_click(this.id)">Approve</button></td>';
+                                        html += '<td style="text-align: center;"><button id=' + data[i]._id + ' onClick="reply_click(this.id)">Approve</button></td>';
                                         html += "</tr>";
                                         }
  
@@ -47,15 +61,25 @@
  
                         function reply_click(clicked_id)
                         {
-                        alert(clicked_id);
+                        //alert('ID: ' + clicked_id);
+                        // post to url to approve a transaction
+ 
+                                var url_id = location.pathname.match(/\/user\/\d+/)[0].substring(6);
+ 
+                        $.post( '/api/submission/' + clicked_id + '/authorize', { user: url_id } );
                         }
                
                 </script>
  
-                List of Transactions
- 
-                <div id="div1">
-                </div>
+                <center>
+                       
+                                <div>&nbsp;</div>
+                                <span style="font-size: 30px; font-type: 'helvetica light';">~ List of Transactions ~</span>
+                                <div>&nbsp;</div>
+                                <div id="div1">
+                                </div>
+                       
+                </center>
  
         </body>
 </html>
