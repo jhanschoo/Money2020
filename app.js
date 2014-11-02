@@ -36,12 +36,14 @@ app.use(multer({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/user/:id', user)
 app.get('/api/user/:id', user);
 app.post('/api/user/create', user);
 app.get('/api/user/:id/submission', submission);
+app.get('/api/user/:id/submission/authorizable', submission);
 app.post('/api/user/:id/submission/create', submission);
 app.get('/api/submission/:id', submission);
-app.post('/api/submission/:id/authorize', submission)
+app.post('/api/submission/:id/authorize', submission);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

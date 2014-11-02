@@ -14,14 +14,21 @@ router.get '/api/user/:id/submission', (req, res) ->
   Submission.find
       user: req.params.id
     , null
-    , (err, users) ->
+    , (err, submissions) ->
 
-      console.log users
+      res.json submissions
 
-      res.json users
+
+router.get '/api/user/:id/submission/authorizable', (req, res) ->
+  Submission.find
+      authroizer: req.params.id
+    , null
+    , (err, submissions) ->
+
+      res.json submissions
+
 
 router.post '/api/user/:id/submission/create', (req, res) ->
-
   # get list of authorizers needed to approve submission
   User.find
       isAuthorizer: true
@@ -54,6 +61,7 @@ router.post '/api/user/:id/submission/create', (req, res) ->
 
             res.json submission
 
+
 router.get '/api/submission/:id', (req, res) ->
   Submission.findOne
       _id: req.params.id
@@ -61,6 +69,7 @@ router.get '/api/submission/:id', (req, res) ->
     , (err, submission) ->
 
       res.json submission
+
 
 authorizeSubmission = (userId, submissionId, req, res) ->
   signature = new Signature
@@ -93,11 +102,9 @@ authorizeSubmission = (userId, submissionId, req, res) ->
                   payment.make submission
               res.json signature
 
+
 router.post '/api/submission/:id/authorize', (req, res) ->
   authorizeSubmission req.body.user, req.params.id, req, res
-
-makePayment = (submission) ->
-
 
 module.exports = router
 

@@ -9,6 +9,10 @@ User = mongoose.model 'User'
 BASE_ACCESS_KEY = 'PC94Z5E3HpZdu8DzkmynDW6JMrkXtyrP'
 
 # GET users listing.
+router.get '/user/:id', (req, res) ->
+  res.send 'hello'
+
+
 router.get '/api/user/:id', (req, res) ->
   console.log req.params.id
   User.findOne
