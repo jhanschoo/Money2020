@@ -1,6 +1,7 @@
 _ = require 'lodash'
 express = require 'express'
 mongoose = require 'mongoose'
+payment = require '../workers/payment.coffee'
 
 router = express.Router()
 
@@ -86,14 +87,17 @@ authorizeSubmission = (userId, submissionId, req, res) ->
             , (err, signatures) ->
               authorizers = _.uniq (_.pluck signatures, 'user')
               console.log authorizers, submission.authorizers
-              if authorizers.length >= submission.authorizers.length
+              if authorizers.length >= submission.authorizers.length and submission.status == 'PENDING'
                 submission.status = 'AUTHORIZED'
-                submission.save()
-                makePayment(submission)
+                submission.save (err, submission) ->
+                  payment.make submission
               res.json signature
 
 router.post '/api/submission/:id/authorize', (req, res) ->
   authorizeSubmission req.body.user, req.params.id, req, res
+
+makePayment = (submission) ->
+
 
 module.exports = router
 
