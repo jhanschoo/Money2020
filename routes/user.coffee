@@ -10,7 +10,11 @@ BASE_ACCESS_KEY = 'PC94Z5E3HpZdu8DzkmynDW6JMrkXtyrP'
 
 # GET users listing.
 router.get '/user/:id', (req, res) ->
-  res.send 'hello'
+  res.render 'user',
+      user: id
+    , (err, html) ->
+      res.send html
+
 
 
 router.get '/api/user/:id', (req, res) ->
