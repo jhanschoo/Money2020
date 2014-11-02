@@ -36,7 +36,7 @@ app.use(multer({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/user/:id', user)
+app.get('/user/:id', user);
 app.get('/api/user/:id', user);
 app.post('/api/user/create', user);
 app.get('/api/user/:id/submission', submission);

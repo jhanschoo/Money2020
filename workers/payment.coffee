@@ -18,7 +18,7 @@ this.make = (submission) ->
         access_token: ACCESS_TOKEN
         phone: submission.user
         note: if submission.picLink then submission.description + ' ' + submission.picLink  else submission.description
-        amount: (submission.amount / 100).toFixed(2)
+        amount: submission.amount.toFixed 2
         audience: 'private'
     , (err, httpResponse, body) ->
       bodyObj = JSON.parse body
