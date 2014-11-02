@@ -17,7 +17,7 @@ SubmissionSchema = new Schema
     enum: ['PENDING', 'AUTHORIZED', 'REJECTED', 'PAID']
   amount:
     type: Number
-    min: 1
+    min: 0.001
     required: true
   description:
     type: String
